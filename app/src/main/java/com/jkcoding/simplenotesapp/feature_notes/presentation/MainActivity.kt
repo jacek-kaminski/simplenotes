@@ -1,4 +1,4 @@
-package com.jkcoding.simplenotesapp
+package com.jkcoding.simplenotesapp.feature_notes.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
