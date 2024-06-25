@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class Note(
     val title: String,
     val content: String,
+    val color: Int,
     @PrimaryKey val id: Int? = null,
 )
