@@ -42,6 +42,12 @@ class NoteListViewModel @Inject constructor(
                     )
                 )
             }
+
+            is NoteListEvent.DeleteNote -> viewModelScope.launch {
+                deleteNoteUseCase(
+                    note = event.note
+                )
+            }
         }
     }
 

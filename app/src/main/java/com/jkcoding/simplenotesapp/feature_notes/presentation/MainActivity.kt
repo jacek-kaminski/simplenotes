@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.jkcoding.simplenotesapp.feature_notes.presentation.add_edit_note.AddEditNoteScreen
 import com.jkcoding.simplenotesapp.feature_notes.presentation.note_list.NoteListScreen
 import com.jkcoding.simplenotesapp.feature_notes.presentation.util.ScreenDestination
 import com.jkcoding.simplenotesapp.ui.theme.SimpleNotesAppTheme
@@ -35,6 +36,9 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable(route = ScreenDestination.NoteListScreen.route) {
                             NoteListScreen(navController = navController)
+                        }
+                        composable(route = ScreenDestination.AddEditNoteScreen.route) {
+                            AddEditNoteScreen(navController = navController)
                         }
                     }
             }
