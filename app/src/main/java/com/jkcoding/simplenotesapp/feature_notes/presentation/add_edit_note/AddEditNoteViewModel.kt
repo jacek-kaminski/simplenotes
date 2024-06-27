@@ -1,10 +1,12 @@
 package com.jkcoding.simplenotesapp.feature_notes.presentation.add_edit_note
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jkcoding.simplenotesapp.feature_notes.domain.model.Note
 import com.jkcoding.simplenotesapp.feature_notes.domain.use_case.AddNoteUseCase
 import com.jkcoding.simplenotesapp.feature_notes.domain.use_case.DeleteNoteUseCase
+import com.jkcoding.simplenotesapp.feature_notes.domain.use_case.GetNoteUseCase
 import com.jkcoding.simplenotesapp.feature_notes.domain.use_case.GetNotesUseCase
 import com.jkcoding.simplenotesapp.feature_notes.presentation.note_list.NoteListState
 import com.jkcoding.simplenotesapp.ui.theme.LightOrange
@@ -23,6 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddEditNoteViewModel @Inject constructor(
     private val addNoteUseCase: AddNoteUseCase,
+    private val getNoteUseCase: GetNoteUseCase,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val _noteTitleState =
@@ -37,6 +41,26 @@ class AddEditNoteViewModel @Inject constructor(
     val eventFlow = _eventFlow.asSharedFlow()
 
     private var currentNoteId: Int? = null
+
+    init {
+        savedStateHandle.get<Int>("noteId")?.let { noteId ->
+            if (noteId != -1) {
+                viewModelScope.launch {
+                    getNoteUseCase(id = noteId)?.also { note ->
+                        currentNoteId = note.id
+                        _noteTitleState.update {
+                            noteTitleState.value.copy(text = note.title, isHintVisible = false)
+                        }
+                        _noteContentState.update {
+                            noteContentState.value.copy(text = note.content, isHintVisible = false)
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
     fun onEvent(event: AddEditNoteEvent) {
         when (event) {
             is AddEditNoteEvent.EnteredTitle -> {

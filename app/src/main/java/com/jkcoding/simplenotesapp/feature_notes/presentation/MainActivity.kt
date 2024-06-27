@@ -13,9 +13,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.jkcoding.simplenotesapp.feature_notes.presentation.add_edit_note.AddEditNoteScreen
 import com.jkcoding.simplenotesapp.feature_notes.presentation.note_list.NoteListScreen
 import com.jkcoding.simplenotesapp.feature_notes.presentation.util.ScreenDestination
@@ -29,18 +31,28 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SimpleNotesAppTheme {
-                    val navController = rememberNavController()
-                    NavHost(
-                        navController = navController,
-                        startDestination = ScreenDestination.NoteListScreen.route,
-                    ) {
-                        composable(route = ScreenDestination.NoteListScreen.route) {
-                            NoteListScreen(navController = navController)
-                        }
-                        composable(route = ScreenDestination.AddEditNoteScreen.route) {
-                            AddEditNoteScreen(navController = navController)
-                        }
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = ScreenDestination.NoteListScreen.route,
+                ) {
+                    composable(route = ScreenDestination.NoteListScreen.route) {
+                        NoteListScreen(navController = navController)
                     }
+                    composable(
+                        route = ScreenDestination.AddEditNoteScreen.route + "?noteId={noteId}",
+                        arguments = listOf(
+                            navArgument(
+                                name = "noteId"
+                            ) {
+                                type = NavType.IntType
+                                defaultValue = -1
+                            },
+                        )
+                    ) {
+                        AddEditNoteScreen(navController = navController)
+                    }
+                }
             }
         }
     }

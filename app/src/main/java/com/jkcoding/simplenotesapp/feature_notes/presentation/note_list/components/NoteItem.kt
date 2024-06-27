@@ -28,12 +28,13 @@ import com.jkcoding.simplenotesapp.ui.theme.LightGreen
 
 @Composable
 fun NoteItem(
+    modifier: Modifier = Modifier,
     note: Note,
     onDeleteClick: () -> Unit,
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color(note.color)),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         elevation = CardDefaults.elevatedCardElevation()
     ) {
         Spacer(
